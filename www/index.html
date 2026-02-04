@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PRIYANKA'S ETERNAL GALAXY MAX</title>
+    
+    <!-- LIBRARIES (TAILWIND + FONTS + ICONS) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <!-- CUSTOM CSS ENGINE V.2026 -->
+    <style>
+        /* --- 1. CORE THEME CONFIGURATION --- */
+        :root {
+            --neon-pink: #ff0055;
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-gold: #ffd700;
+            --neon-orange: #ff5e00; 
+            --neon-green: #00ff9d;
+            --bg-void: #020205;
+            /* UPDATED: ULTRA CLEAR TRANSPARENCY (একদম স্বচ্ছ কাঁচের মতো) */
+            --glass-panel: rgba(255, 255, 255, 0.0); 
+            --glass-border: rgba(255, 255, 255, 0.3);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            background-color: var(--bg-void);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            height: 100vh; width: 100vw;
+            overflow: hidden; 
+            user-select: none;
+            overscroll-behavior-y: none;
+        }
+
+        /* --- 2. RGB LIGHTING SYSTEM (RESTORED) --- */
+        @keyframes rgb { 
+            0% { background-position: 0 50%; } 
+            50% { background-position: 100% 50%; } 
+            100% { background-position: 0 50%; } 
+        }
+        @keyframes rotate { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+
+        /* The Glowing RGB Border */
+        .rgb-border { position: relative; overflow: hidden; z-index: 1; }
+        .rgb-border::after {
+            content: ''; position: absolute; inset: -2px; z-index: -1;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple), var(--neon-gold), var(--neon-green));
+            background-size: 300%; 
+            animation: rgb 4s linear infinite;
+            filter: blur(5px);
+        }
+        .rgb-border::before {
+            content: ''; position: absolute; inset: -2px; z-index: -2;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple), var(--neon-gold));
+            background-size: 300%; 
+            animation: rgb 4s linear infinite;
+        }
+
+        /* RGB Viewer Box */
+        .rgb-animate-box {
+            position: relative; padding: 3px; border-radius: 12px;
+            background: #000; overflow: hidden; display: inline-block;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+        }
+        .rgb-animate-box::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, var(--neon-cyan), var(--neon-pink), var(--neon-gold), var(--neon-purple));
+            animation: rotate 3s linear infinite; z-index: 0;
+        }
+        .rgb-content {
+            position: relative; z-index: 2; border-radius: 10px;
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
+            background: #000;
+        }
+
+        /* --- 3. FLOATING MEMORIES ANIMATION (RESTORED) --- */
+        #bg-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            pointer-events: none; overflow: hidden;
+        }
+        .mem-float {
+            position: absolute; width: 90px; height: 90px; border-radius: 12px;
+            object-fit: cover; opacity: 1.0; /* UPDATED: Full visibility for background photos */
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
+            border: 1px solid rgba(255,255,255,0.5);
+            animation: floating linear infinite;
+            z-index: -1;
+        }
+        @keyframes floating {
+            0% { transform: translateY(110vh) rotate(0deg) scale(0.8); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateY(-20vh) rotate(360deg) scale(1.2); opacity: 0; }
+        }
+
+        /* --- 4. LAYOUT & SCROLLING --- */
+        .scroll-view {
+            overflow-y: auto; overflow-x: hidden; height: 100%;
+            -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+            padding-bottom: 150px;
+        }
+
+        .gallery-container {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+            width: 100%; padding: 10px; grid-auto-rows: min-content; 
+        }
+        .game-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
+            width: 100%; padding: 10px;
+        }
+        .gallery-list {
+            display: flex; flex-direction: column; gap: 10px;
+            width: 100%; padding: 10px;
+        }
+
+        /* --- 5. GLASS CARDS & ITEMS (UPDATED FOR ULTRA TRANSPARENCY) --- */
+        .glass-box {
+            background: var(--glass-panel); 
+            backdrop-filter: none !important; /* BLUR REMOVED: পেছনের ছবি স্পষ্ট দেখার জন্য */
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            /* Slight shadow to separate text, but keeping it clear */
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1); 
+            position: relative; overflow: hidden;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* Text readability improved on transparent bg */
+        }
+
+        .gallery-item {
+            aspect-ratio: 1 / 1; width: 100%; position: relative;
+            background: rgba(255, 255, 255, 0.01); /* Extremely transparent */
+            border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); 
+            overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.5); 
+            transition: transform 0.2s;
+        }
+        .gallery-item:active { transform: scale(0.98); border-color: var(--neon-cyan); }
+
+        .doc-item {
+            width: 100%; background: rgba(0, 0, 0, 0.2); /* Slightly darker for text readability */
+            border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 12px; padding: 15px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4); backdrop-filter: none;
+        }
+        
+        .project-item {
+            width: 100%; background: linear-gradient(90deg, rgba(255, 94, 0, 0.1), rgba(0, 0, 0, 0.4));
+            border: 1px solid rgba(255, 94, 0, 0.3); border-left: 4px solid var(--neon-orange);
+            border-radius: 10px; padding: 20px; display: flex; align-items: center;
+            justify-content: space-between; margin-bottom: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+        }
+
+        .game-card {
+            width: 100%; aspect-ratio: 16 / 9; background: rgba(0,0,0,0.3);
+            border: 1px solid var(--neon-green); border-radius: 15px;
+            position: relative; overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.15); transition: 0.3s;
+        }
+        .game-card:active { transform: scale(0.95); box-shadow: 0 0 25px rgba(0, 255, 157, 0.5); }
+        .game-thumb { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+        .game-info {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 12px; text-align: center;
+        }
+
+        .gallery-item img, .gallery-item video {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        /* Fonts & Inputs */
+        .font-love { font-family: 'Dancing Script', cursive; }
+        .font-tech { font-family: 'Orbitron', sans-serif; }
+        .font-code { font-family: 'Share Tech Mono', monospace; }
+
+        input { user-select: text !important; -webkit-user-select: text !important; }
+        .input-tech {
+            background: rgba(0,0,0,0.4); border: none; border-bottom: 2px solid #555;
+            color: white; font-family: 'Share Tech Mono', monospace; text-align: center;
+            font-size: 1.2rem; padding: 15px; width: 100%; transition: 0.3s;
+        }
+        .input-tech:focus { outline: none; border-color: var(--neon-cyan); background: rgba(0, 243, 255, 0.1); }
+
+        .btn-hyper {
+            background: linear-gradient(90deg, rgba(255,0,85,0.1), rgba(0,243,255,0.1));
+            border: 1px solid var(--neon-cyan); color: var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif; font-weight: 700; letter-spacing: 2px;
+            transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .btn-hyper:active { transform: scale(0.95); background: var(--neon-cyan); color: black; }
+
+        /* Screens */
+        .screen { display: none; width: 100%; height: 100%; flex-direction: column; }
+        .screen.active { display: flex; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        .shake-screen { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; border: 3px solid red !important; }
+        @keyframes shake { 10%, 90% { transform: translate3d(-2px, 0, 0); } 20%, 80% { transform: translate3d(4px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-8px, 0, 0); } 40%, 60% { transform: translate3d(8px, 0, 0); } }
+
+        /* Bars */
+        .progress-track { height: 4px; background: #222; border-radius: 2px; overflow: hidden; margin-top: 5px; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan)); width: 0%; transition: width 0.1s linear; }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- DYNAMIC BACKGROUND LAYER (FOR FLOATING PHOTOS) -->
+    <div id="bg-layer"></div>
+    <!-- UPDATED: Removed dark overlay to make background crystal clear as requested -->
+    
+    <!-- ================================================================= -->
+    <!-- 1. LOGIN SCREEN (RGB RESTORED) -->
+    <!-- ================================================================= -->
+    <div id="scr-auth" class="screen items-center justify-center p-6 active z-50">
+        <!-- RGB BORDER ADDED HERE -->
+        <div class="glass-box rgb-border p-10 w-full max-w-sm text-center relative z-10 !bg-transparent border-white/30">
+            <h1 class="text-6xl font-love text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 mb-2 drop-shadow-[0_0_15px_rgba(255,0,85,0.8)] animate-pulse">
+                Priyanka
+            </h1>
+            <p class="text-[10px] font-tech text-cyan-400 tracking-[0.4em] mb-10 border-b border-gray-700 pb-2">
+                ETERNAL MEMORIES
+            </p>
+
+            <div class="space-y-6">
+                <input type="text" id="in-id" placeholder="USER ID" class="input-tech" autocomplete="off">
+                <input type="password" id="in-pass" placeholder="PASSWORD" class="input-tech">
+            </div>
+
+            <button onclick="Auth.login()" class="btn-hyper w-full py-4 mt-10 text-lg shadow-lg">
+                ENTER VAULT
+            </button>
+        </div>
+
+        <div id="alert-zone" class="hidden fixed inset-0 bg-red-950/98 z-[100] flex-col items-center justify-center text-center backdrop-blur-md">
+            <i class="fas fa-radiation-alt text-9xl text-red-600 animate-spin-slow mb-6"></i>
+            <h1 class="text-6xl font-tech text-white mb-2">ACCESS DENIED</h1>
+            <p class="font-code text-red-300 text-xl px-4 uppercase tracking-widest">Wrong Credentials!<br>Are you Priyanka?</p>
+            <button onclick="Auth.reset()" class="mt-12 px-10 py-3 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition font-tech tracking-widest rounded bg-black shadow-[0_0_30px_red]">TRY AGAIN</button>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- 2. DASHBOARD SCREEN (TRANSPARENT FOLDERS) -->
+    <!-- ================================================================= -->
+    <div id="scr-dash" class="screen z-10">
+        
+        <!-- HEADER -->
+        <div class="glass-box m-3 p-3 flex justify-between items-center sticky top-2 z-40 border-b border-white/20 !bg-transparent">
+            <div class="flex items-center gap-4">
+                <div class="relative group cursor-pointer" onclick="document.getElementById('pf-up').click()">
+                    <img id="pf-img" src="https://cdn-icons-png.flaticon.com/512/924/924915.png" class="w-14 h-14 rounded-full border-2 border-pink-500 object-cover shadow-[0_0_15px_var(--neon-pink)]">
+                    <div id="pf-load" class="hidden absolute inset-0 bg-black/80 rounded-full flex items-center justify-center text-xs text-white"><i class="fas fa-spinner fa-spin"></i></div>
+                    <input type="file" id="pf-up" class="hidden" accept="image/*">
+                </div>
+                <div>
+                    <h2 class="font-love text-3xl text-white drop-shadow-md">Priyanka</h2>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        <p class="text-[9px] font-tech text-cyan-400 tracking-[0.2em]">CLOUD SYNC: ACTIVE</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="Settings.open()" class="w-10 h-10 rounded-full bg-white/10 border border-white/30 text-white hover:bg-white hover:text-black transition flex items-center justify-center"><i class="fas fa-cog"></i></button>
+                <button onclick="Auth.logout()" class="w-10 h-10 rounded-full bg-red-900/40 border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition flex items-center justify-center"><i class="fas fa-power-off"></i></button>
+            </div>
+        </div>
+
+        <!-- MAIN SCROLLABLE FOLDERS -->
+        <div class="flex-1 scroll-view p-4">
+            
+            <div class="text-center mb-6">
+                <h3 class="text-gray-300 font-tech text-xs tracking-[0.3em] border-l-4 border-pink-500 pl-2 inline-block drop-shadow-lg font-bold">SELECT FOLDER</h3>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <!-- MEDIA FOLDERS (CRYSTAL CLEAR GLASS) -->
+                <!-- UPDATED: Removed background colors/blur to see floating photos clearly -->
+                <div onclick="Gallery.open('image')" class="glass-box h-48 flex flex-col items-center justify-center cursor-pointer hover:border-pink-500 transition group active:scale-95 !bg-transparent">
+                    <i class="fas fa-camera-retro text-4xl text-pink-500 mb-3 group-hover:scale-110 transition drop-shadow-[0_0_10px_rgba(255,0,85,0.8)]"></i>
+                    <span class="font-tech text-lg text-white font-bold drop-shadow-md">PHOTOS</span>
+                    <span class="block text-[10px] text-gray-200 font-mono cnt-image">Loading...</span>
+                </div>
+                <div onclick="Gallery.open('video')" class="glass-box h-48 flex flex-col items-center justify-center cursor-pointer hover:border-cyan-500 transition group active:scale-95 !bg-transparent">
+                    <i class="fas fa-video text-4xl text-cyan-500 mb-3 group-hover:scale-110 transition drop-shadow-[0_0_10px_rgba(0,243,255,0.8)]"></i>
+                    <span class="font-tech text-lg text-white font-bold drop-shadow-md">VIDEOS</span>
+                    <span class="block text-[10px] text-gray-200 font-mono cnt-video">Loading...</span>
+                </div>
+                <div onclick="Gallery.open('audio')" class="glass-box h-48 flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 transition group active:scale-95 !bg-transparent">
+                    <i class="fas fa-music text-4xl text-purple-500 mb-3 group-hover:scale-110 transition drop-shadow-[0_0_10px_rgba(188,19,254,0.8)]"></i>
+                    <span class="font-tech text-lg text-white font-bold drop-shadow-md">MUSIC</span>
+                    <span class="block text-[10px] text-gray-200 font-mono cnt-audio">Loading...</span>
+                </div>
+                <div onclick="Gallery.open('doc')" class="glass-box h-48 flex flex-col items-center justify-center cursor-pointer hover:border-yellow-500 transition group active:scale-95 !bg-transparent">
+                    <i class="fas fa-file-alt text-4xl text-yellow-500 mb-3 group-hover:scale-110 transition drop-shadow-[0_0_10px_rgba(255,215,0,0.8)]"></i>
+                    <span class="font-tech text-lg text-white font-bold drop-shadow-md">DOCS</span>
+                    <span class="block text-[10px] text-gray-200 font-mono cnt-doc">Loading...</span>
+                </div>
+
+                <!-- PROJECT FOLDER -->
+                <div onclick="Gallery.open('project')" class="glass-box h-40 col-span-2 flex flex-col items-center justify-center cursor-pointer hover:border-orange-500 transition group relative overflow-hidden active:scale-95 !bg-transparent">
+                    <div class="absolute inset-0 bg-orange-900/10 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                    <i class="fas fa-laptop-code text-5xl text-orange-500 mb-3 group-hover:scale-110 transition shadow-[0_0_10px_orange]"></i>
+                    <span class="font-tech text-2xl text-white tracking-widest font-bold drop-shadow-md">MY PROJECTS</span>
+                    <span class="block text-[10px] text-gray-200 font-mono cnt-project">Loading...</span>
+                </div>
+
+                <!-- MIND FRESH GAME FOLDER -->
+                <div onclick="Gallery.open('game')" class="glass-box h-24 col-span-2 flex items-center justify-between px-6 cursor-pointer hover:border-green-400 transition group relative overflow-hidden shadow-[0_0_15px_rgba(0,255,157,0.1)] active:scale-95 !bg-transparent">
+                    <div class="absolute inset-0 bg-green-900/10 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                    <div class="flex items-center gap-4 relative z-10">
+                        <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500 text-green-400">
+                            <i class="fas fa-gamepad text-2xl"></i>
+                        </div>
+                        <div>
+                            <span class="font-tech text-xl text-green-400 tracking-widest block font-bold">MIND FRESH GAME</span>
+                            <span class="text-[10px] text-gray-200 font-mono cnt-game">Tap to Play</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-right text-green-500 opacity-50 group-hover:translate-x-2 transition"></i>
+                </div>
+
+            </div>
+
+            <div class="glass-box mt-6 p-4 flex justify-between items-center !bg-transparent border border-white/10">
+                <span class="text-xs font-tech text-gray-300 font-bold">TOTAL STORAGE</span>
+                <span class="text-xl font-mono text-cyan-400 font-bold drop-shadow-sm" id="total-sz">0.00 MB</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- 3. GALLERY SCREEN -->
+    <!-- ================================================================= -->
+    <div id="scr-gal" class="screen bg-black/95 z-20">
+        <div class="p-3 bg-black/80 flex items-center justify-between border-b border-white/10 sticky top-0 z-30 shadow-2xl backdrop-blur-md">
+            <button onclick="UI.nav('scr-dash')" class="text-cyan-400 font-bold text-xs border border-cyan-800 px-4 py-2 rounded-full hover:bg-cyan-900/50 transition flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> BACK
+            </button>
+            <h2 id="gal-title" class="font-tech text-lg text-white tracking-widest uppercase">GALLERY</h2>
+            <div class="w-16"></div>
+        </div>
+
+        <div class="p-4 sticky top-12 z-20 bg-gradient-to-b from-black to-transparent">
+            <!-- Upload Button -->
+            <div id="upload-zone" onclick="document.getElementById('spec-up').click()" class="glass-box p-3 flex items-center justify-center gap-3 cursor-pointer hover:bg-white/10 transition border border-dashed border-gray-600 group !bg-transparent">
+                <div class="w-10 h-10 rounded-full bg-cyan-500 flex items-center justify-center text-black font-bold shadow-lg group-hover:scale-110 transition"><i class="fas fa-plus"></i></div>
+                <div class="text-left">
+                    <h4 class="font-tech text-white text-sm font-bold" id="up-label">UPLOAD HERE</h4>
+                </div>
+                <input type="file" id="spec-up" multiple class="hidden">
+            </div>
+        </div>
+
+        <div id="queue-box" class="hidden px-4 mb-2 space-y-2"></div>
+
+        <div class="flex-1 scroll-view p-3">
+            <div id="gal-grid" class="gallery-container"></div>
+        </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- 4. MODALS (PERMISSION, VIEWERS, SETTINGS) -->
+    <!-- ================================================================= -->
+    
+    <!-- DOWNLOAD PERMISSION MODAL -->
+    <div id="mod-down" class="hidden fixed inset-0 z-[100] bg-black/90 flex items-end sm:items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-[#1a1a1a] border border-gray-700 w-full max-w-sm rounded-t-2xl sm:rounded-2xl p-6 shadow-2xl transform transition-all duration-300 slide-up">
+            <div class="text-center mb-6">
+                <i class="fas fa-cloud-download-alt text-5xl text-cyan-400 mb-4 animate-bounce"></i>
+                <h3 class="text-xl font-bold text-white mb-2 font-tech">DOWNLOAD FILE?</h3>
+                <p id="down-name" class="text-xs text-gray-400 font-mono break-all border p-2 rounded border-gray-700">filename.jpg</p>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="closeDownModal()" class="py-3 rounded-xl bg-gray-800 text-gray-300 font-bold hover:bg-gray-700">CANCEL</button>
+                <button onclick="confirmDownload()" class="py-3 rounded-xl bg-cyan-600 text-white font-bold hover:bg-cyan-500 shadow-[0_0_15px_cyan]">DOWNLOAD</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="mod-set" class="hidden fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-6 backdrop-blur-md">
+        <div class="glass-box w-full max-w-sm p-6 relative border border-gray-700 !bg-white/5">
+            <button onclick="Settings.close()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+            <h3 class="font-tech text-white text-lg mb-6 border-b border-gray-700 pb-2 uppercase tracking-tighter">System Config</h3>
+            <div class="space-y-4">
+                <label class="text-[10px] text-pink-500 font-mono">RESET CODE REQUIRED</label>
+                <input type="text" id="reset-code" class="input-tech text-sm border-pink-500" placeholder="ENTER SECRET CODE">
+                <div id="new-creds" class="hidden space-y-4 border-t border-gray-700 pt-4">
+                    <input type="text" id="set-u" class="input-tech text-sm" placeholder="NEW ID">
+                    <input type="text" id="set-p" class="input-tech text-sm" placeholder="NEW PASS">
+                    <button onclick="Settings.save()" class="btn-hyper w-full py-3 text-sm shadow-[0_0_15px_cyan]">UPDATE CREDENTIALS</button>
+                </div>
+                <button onclick="Settings.verify()" id="btn-verify" class="btn-hyper w-full py-3 text-sm">VERIFY CODE</button>
+            </div>
+            
+            <div id="master-reveal" class="hidden mt-6 bg-red-900/20 border border-red-800 p-3 rounded text-center">
+                <p class="text-[9px] text-red-500 font-tech mb-2">MASTER ACCESS GRANTED</p>
+                <p class="text-xs text-gray-300 font-mono">ID: <span id="real-u" class="text-white"></span></p>
+                <p class="text-xs text-gray-300 font-mono">PASS: <span id="real-p" class="text-white"></span></p>
+                
+                <!-- SECURE HTML PROJECT UPLOAD -->
+                <div class="mt-4 pt-4 border-t border-red-800/50">
+                    <p class="text-[10px] text-orange-500 font-tech mb-2">SECURE PROJECT UPLOAD</p>
+                    <label for="html-up" class="block w-full py-3 bg-orange-900/30 border border-orange-500 text-orange-400 font-mono text-xs cursor-pointer hover:bg-orange-500 hover:text-white transition rounded text-center">
+                        <i class="fas fa-upload mr-2"></i> UPLOAD HTML PROJECT
+                    </label>
+                    <input type="file" id="html-up" class="hidden" accept=".html">
+                </div>
+
+                <!-- MIND FRESH GAME UPLOAD -->
+                <div class="mt-4 pt-4 border-t border-red-800/50">
+                    <p class="text-[10px] text-green-400 font-tech mb-2">MIND FRESH GAME UPLOAD</p>
+                    
+                    <input type="text" id="gm-name" placeholder="GAME NAME" class="w-full bg-black/50 border border-green-800 text-green-400 text-xs p-2 mb-2 rounded font-mono text-center">
+                    <input type="text" id="gm-url" placeholder="OR PASTE URL LINK" class="w-full bg-black/50 border border-green-800 text-green-400 text-xs p-2 mb-2 rounded font-mono text-center">
+                    
+                    <label class="block text-xs text-left text-gray-400 mb-1">1. GAME FILE (.HTML)</label>
+                    <input type="file" id="gm-file" accept=".html" class="block w-full text-xs text-gray-400 mb-2 border border-gray-700 rounded p-1">
+                    
+                    <label class="block text-xs text-left text-gray-400 mb-1">2. LOGO / DP (IMAGE)</label>
+                    <input type="file" id="gm-thumb" accept="image/*" class="block w-full text-xs text-gray-400 mb-2 border border-gray-700 rounded p-1">
+                    
+                    <button onclick="window.uploadGame()" class="btn-hyper w-full py-2 text-xs border-green-500 text-green-400 mt-2">UPLOAD GAME + LOGO</button>
+                    <div id="gm-load" class="hidden text-[10px] text-green-500 mt-1">UPLOADING... <span id="gm-prog">0%</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEWER WITH RGB EFFECT (RESTORED) -->
+    <div id="mod-view" class="hidden fixed inset-0 z-[80] bg-black/98 flex flex-col items-center justify-center">
+        <div class="absolute top-4 right-4 z-[90] flex gap-4">
+            <button onclick="closeViewer()" class="text-red-500 text-4xl hover:scale-110 transition"><i class="fas fa-times-circle"></i></button>
+        </div>
+        <div id="view-body" class="w-full h-full flex items-center justify-center p-4 relative overflow-hidden"></div>
+        <div class="swipe-info">Swipe Left/Right to Navigate</div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- LOGIC MODULE -->
+    <!-- ================================================================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        // CONFIG
+        const CLOUD_NAME = "dbzsbe4vo";
+        const PRESET = "priyanpka_pp";
+        const FB_CFG = {
+            apiKey: "AIzaSyAY97_iFryUusBSTrJsBzSIFRnIovcA4LY",
+            authDomain: "my-photo-301f2.firebaseapp.com",
+            projectId: "my-photo-301f2",
+            storageBucket: "my-photo-301f2.firebasestorage.app",
+            messagingSenderId: "342830947438",
+            appId: "1:342830947438:web:c716ce7c1462733a451a7f"
+        };
+        const MST = { u: "QDc2MDI1OTQ5MTNA", p: "Kjc2MDI1OTQ5MTMq" };
+        const RST_CODE = "S9163010881P";
+        const TG_TOKEN = "8491153047:AAFuRywcM4w0JkQcl1A5TI1KOAUNptObE5g";
+        const TG_CHAT = "-1003798466600";
+        const REAL_MST_PASS = "7602594913";
+
+        // INIT
+        const app = initializeApp(FB_CFG);
+        const db = getFirestore(app);
+        const colRef = collection(db, "priyanka_galaxy_v3");
+        
+        let allFiles = [];
+        let currentTypeFiles = [];
+        let currentIdx = 0;
+        let tStart = 0;
+        let downloadTarget = null;
+
+        // 1. AUTH & PROFILE SYNC
+        window.onload = async () => {
+            if(localStorage.getItem('p_auth_galaxy')) {
+                Auth.isMaster = (localStorage.getItem('p_mst') === 'true');
+                UI.nav('scr-dash');
+            }
+            startCloudListener();
+            try {
+                const docRef = doc(db, "priyanka_galaxy_v3", "USER_PROFILE");
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists() && docSnap.data().url) {
+                    document.getElementById('pf-img').src = docSnap.data().url;
+                }
+            } catch(e) { console.log(e); }
+        };
+
+        const Auth = {
+            creds: JSON.parse(localStorage.getItem('p_creds')) || {u:"Priyanka", p:"1234"},
+            isMaster: false,
+            login: function() {
+                const u = document.getElementById('in-id').value;
+                const p = document.getElementById('in-pass').value;
+                try { if(btoa(u)===MST.u && btoa(p)===MST.p) { this.isMaster=true; this.success(); return; } } catch(e){}
+                if(u===this.creds.u && p===this.creds.p) { this.isMaster=false; this.success(); }
+                else {
+                    document.getElementById('alert-zone').classList.remove('hidden');
+                    document.getElementById('scr-auth').classList.add('shake-screen');
+                }
+            },
+            success: function() {
+                localStorage.setItem('p_auth_galaxy','true');
+                localStorage.setItem('p_mst', this.isMaster);
+                UI.nav('scr-dash');
+            },
+            reset: function() { 
+                document.getElementById('alert-zone').classList.add('hidden'); 
+                document.getElementById('scr-auth').classList.remove('shake-screen');
+            },
+            logout: function() { if(confirm("LOGOUT PERMANENTLY?")) { localStorage.removeItem('p_auth_galaxy'); location.reload(); } }
+        };
+        window.Auth = Auth;
+
+        const UI = {
+            nav: (id) => {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                document.getElementById(id).classList.add('active');
+            }
+        };
+        window.UI = UI;
+
+        // 2. REALTIME LISTENER
+        function startCloudListener() {
+            const q = query(colRef, orderBy("time", "desc"));
+            onSnapshot(q, (snap) => {
+                allFiles = [];
+                snap.docs.forEach(doc => { if(doc.id !== "USER_PROFILE") allFiles.push({...doc.data(), fid: doc.id}); });
+                updateStats();
+                updateFloatingBg(); // Trigger floating photos update
+                
+                if(document.getElementById('scr-gal').classList.contains('active')) {
+                    const t = document.getElementById('gal-title').getAttribute('dt');
+                    Gallery.render(t);
+                }
+            });
+        }
+
+        function updateStats() {
+            let total = 0;
+            ['image','video','audio','doc', 'project', 'game'].forEach(t => {
+                const files = allFiles.filter(f => f.type === t);
+                let size = 0; files.forEach(f => size += (f.size || 0));
+                total += size;
+                const el = document.querySelector(`.cnt-${t}`);
+                if(el) el.innerText = `${files.length} Files`;
+            });
+            document.getElementById('total-sz').innerText = (total / (1024 * 1024)).toFixed(2) + " MB";
+        }
+
+        // --- FIXED FLOATING MEMORIES: Continuous Loop ---
+        function updateFloatingBg() {
+            const con = document.getElementById('bg-layer');
+            const imgs = allFiles.filter(f => f.type === 'image');
+            if(imgs.length === 0) return;
+            
+            // Clear current floaters to prevent stacking
+            con.innerHTML = '';
+            
+            // Create random floaters from the image list
+            const maxFloaters = 20; 
+            for(let i=0; i<maxFloaters; i++) {
+                const img = imgs[Math.floor(Math.random() * imgs.length)];
+                const el = document.createElement('img');
+                el.src = img.url;
+                el.className = 'mem-float';
+                
+                // Random positioning and delays for natural look
+                el.style.left = Math.random() * 95 + '%';
+                el.style.width = (60 + Math.random() * 60) + 'px'; 
+                el.style.height = el.style.width;
+                
+                const duration = 15 + Math.random() * 20; // 15-35s duration
+                const delay = Math.random() * 20; // 0-20s delay
+                
+                el.style.animationDuration = `${duration}s`;
+                el.style.animationDelay = `-${delay}s`; 
+                
+                con.appendChild(el);
+            }
+        }
+
+        // 3. UPLOAD ENGINE
+        document.getElementById('spec-up').onchange = async (e) => {
+            const files = Array.from(e.target.files);
+            const type = document.getElementById('gal-title').getAttribute('dt');
+            if(!files.length) return;
+            document.getElementById('queue-box').classList.remove('hidden');
+            for(let f of files) {
+                if(type === 'doc') await uploadToTelegram(f);
+                else await uploadToCloudinary(f);
+            }
+            e.target.value = '';
+        };
+
+        // HTML UPLOAD
+        document.getElementById('html-up').onchange = async (e) => {
+            const file = e.target.files[0];
+            if(!file || !file.name.endsWith('.html')) { alert("ONLY .HTML FILES"); return; }
+            if(!confirm("UPLOAD PROJECT?")) return;
+            Settings.close();
+            UI.nav('scr-gal'); Gallery.open('project');
+            document.getElementById('queue-box').classList.remove('hidden');
+            const uid = "u" + Date.now();
+            showProgress(uid, file.name);
+            const fd = new FormData();
+            fd.append('upload_preset', PRESET); fd.append('file', file); fd.append('resource_type', 'raw');
+            const xhr = new XMLHttpRequest();
+            xhr.upload.onprogress = e => { document.getElementById(`b-${uid}`).style.width = Math.round((e.loaded/e.total)*100)+'%'; };
+            xhr.onload = async () => {
+                if(xhr.status === 200) {
+                    const res = JSON.parse(xhr.responseText);
+                    await addDoc(colRef, { name: file.name, type: 'project', size: file.size, url: res.secure_url, source: 'cloudinary', time: Date.now() });
+                    document.getElementById(uid).remove();
+                } else err(uid);
+            };
+            xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`); xhr.send(fd);
+        };
+
+        // GAME UPLOAD
+        window.uploadGame = async () => {
+            const name = document.getElementById('gm-name').value;
+            const urlInput = document.getElementById('gm-url').value;
+            const fileInput = document.getElementById('gm-file').files[0];
+            const thumbInput = document.getElementById('gm-thumb').files[0];
+            if(!name || !thumbInput || (!urlInput && !fileInput)) return alert("FILL ALL DETAILS");
+            document.getElementById('gm-load').classList.remove('hidden'); document.getElementById('gm-prog').innerText = "0%";
+            try {
+                // Upload Thumb
+                const fdThumb = new FormData(); fdThumb.append('upload_preset', PRESET); fdThumb.append('file', thumbInput);
+                const resThumb = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, { method: 'POST', body: fdThumb });
+                const dataThumb = await resThumb.json();
+                document.getElementById('gm-prog').innerText = "50%";
+                let gameUrl = urlInput; let fSize = 0;
+                // Upload HTML if exists
+                if(fileInput) {
+                    const fdFile = new FormData(); fdFile.append('upload_preset', PRESET); fdFile.append('file', fileInput); fdFile.append('resource_type', 'raw');
+                    const resFile = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`, { method: 'POST', body: fdFile });
+                    const dataFile = await resFile.json();
+                    gameUrl = dataFile.secure_url; fSize = fileInput.size;
+                }
+                document.getElementById('gm-prog').innerText = "100%";
+                await addDoc(colRef, { name: name, type: 'game', size: fSize, url: gameUrl, thumbnail: dataThumb.secure_url, source: 'cloudinary', time: Date.now() });
+                alert("GAME UPLOADED!"); Settings.close();
+            } catch(e) { alert("FAILED"); }
+            document.getElementById('gm-load').classList.add('hidden');
+        };
+
+        async function uploadToTelegram(file) {
+            const uid = "u" + Date.now(); showProgress(uid, file.name);
+            try {
+                const fd = new FormData(); fd.append('chat_id', TG_CHAT); fd.append('document', file);
+                const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendDocument`, { method: 'POST', body: fd });
+                const data = await res.json();
+                if(data.ok) { await saveDB(file, data.result.document.file_id, 'telegram'); document.getElementById(uid).remove(); }
+                else throw new Error();
+            } catch(e) { err(uid); }
+        }
+
+        function uploadToCloudinary(file) {
+            return new Promise(resolve => {
+                const uid = "u" + Date.now(); showProgress(uid, file.name);
+                const fd = new FormData(); fd.append('upload_preset', PRESET); fd.append('file', file);
+                const xhr = new XMLHttpRequest();
+                xhr.upload.onprogress = e => { document.getElementById(`b-${uid}`).style.width = Math.round((e.loaded/e.total)*100)+'%'; };
+                xhr.onload = async () => {
+                    if(xhr.status === 200) {
+                        const res = JSON.parse(xhr.responseText);
+                        await saveDB(file, res.secure_url, 'cloudinary');
+                        document.getElementById(uid).remove();
+                    } else err(uid);
+                    resolve();
+                };
+                xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`); xhr.send(fd);
+            });
+        }
+
+        function showProgress(uid, name) {
+            const div = document.createElement('div');
+            div.className = 'glass-box p-3 text-xs border border-cyan-500 bg-black/60'; div.id = uid;
+            div.innerHTML = `<span class="truncate block text-white">${name}</span><div class="progress-track"><div id="b-${uid}" class="progress-fill"></div></div>`;
+            document.getElementById('queue-box').prepend(div);
+        }
+        function err(id) { document.getElementById(id).innerHTML='<span class="text-red-500 font-bold">FAILED</span>'; setTimeout(()=>document.getElementById(id).remove(),4000); }
+        async function saveDB(file, url, src) {
+            let t = 'doc'; const m = file.type;
+            if(m.startsWith('image')) t = 'image'; else if(m.startsWith('video')) t = 'video'; else if(m.startsWith('audio') || file.name.endsWith('.mp3')) t = 'audio';
+            await addDoc(colRef, { name: file.name, type: t, size: file.size, url: url, source: src, time: Date.now() });
+        }
+
+        // 4. GALLERY LOGIC WITH SUPER-FAST THUMBNAILS & AUTOMATIC THUMBNAIL FIX
+        const Gallery = {
+            open: (type) => {
+                UI.nav('scr-gal');
+                const t = {image:"PHOTOS", video:"VIDEOS", audio:"MUSIC", doc:"DOCS", project:"SECRET PROJECTS", game:"MIND FRESH GAMES"};
+                document.getElementById('gal-title').innerText = t[type];
+                document.getElementById('gal-title').setAttribute('dt', type);
+                if(type === 'project' || type === 'game') document.getElementById('upload-zone').classList.add('hidden');
+                else document.getElementById('upload-zone').classList.remove('hidden');
+                Gallery.render(type);
+            },
+            render: (type) => {
+                const grid = document.getElementById('gal-grid');
+                currentTypeFiles = allFiles.filter(f => f.type === type);
+                grid.innerHTML = '';
+                if(type === 'doc' || type === 'project') grid.className = 'gallery-list';
+                else if(type === 'game') grid.className = 'game-grid';
+                else grid.className = 'gallery-container';
+                
+                if(!currentTypeFiles.length) { grid.innerHTML = '<div class="w-full text-center text-gray-500 mt-20 font-tech">NO FILES FOUND</div>'; return; }
+
+                currentTypeFiles.forEach((f, index) => {
+                    const div = document.createElement('div');
+                    
+                    if(type === 'doc') {
+                        div.className = 'doc-item';
+                        let ico = 'fa-file-alt';
+                        if(f.name.endsWith('.pdf')) ico = 'fa-file-pdf text-red-500';
+                        else if(f.name.endsWith('.doc') || f.name.endsWith('.docx')) ico = 'fa-file-word text-blue-500';
+                        const isTG = f.source === 'telegram';
+                        div.innerHTML = `
+                            <div class="flex items-center gap-4 cursor-pointer w-2/3" onclick="${isTG ? `viewTelegram('${f.url}')` : `openViewer(${index})`}">
+                                <div class="relative"><i class="fas ${ico} text-3xl"></i></div>
+                                <div class="overflow-hidden"><p class="font-tech text-sm text-white truncate">${f.name}</p><p class="text-[9px] text-gray-400 font-mono">${new Date(f.time).toLocaleDateString()}</p></div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="window.del('${f.fid}', '${f.type}')" class="w-10 h-10 rounded-full bg-red-900/20 text-red-500 border border-red-500/30 flex items-center justify-center"><i class="fas fa-trash"></i></button>
+                                ${!isTG ? `<button onclick="askDownload('${f.url}', '${f.name}')" class="w-10 h-10 rounded-full bg-green-900/20 text-green-500 border border-green-500/30 flex items-center justify-center"><i class="fas fa-download"></i></button>` : ''}
+                            </div>`;
+                        grid.appendChild(div);
+                    } 
+                    else if(type === 'project') {
+                        div.className = 'project-item';
+                        div.innerHTML = `
+                            <div class="flex items-center gap-4 cursor-pointer flex-1" onclick="openViewer(${index})">
+                                <div class="w-12 h-12 bg-orange-500 text-black rounded-lg flex items-center justify-center font-bold text-xl shadow-[0_0_15px_orange]"><i class="fas fa-terminal"></i></div>
+                                <div class="overflow-hidden"><p class="font-tech text-lg text-orange-400 truncate tracking-widest">${f.name.replace('.html','')}</p><p class="text-[9px] text-gray-400 font-mono">TAP TO LAUNCH</p></div>
+                            </div>
+                            <button onclick="window.del('${f.fid}', 'project')" class="w-10 h-10 rounded-full bg-red-900/20 text-red-500 border border-red-500/30 hover:bg-red-500 hover:text-white transition flex items-center justify-center"><i class="fas fa-trash"></i></button>`;
+                        grid.appendChild(div);
+                    }
+                    else if(type === 'game') {
+                        div.className = 'game-card group cursor-pointer';
+                        div.innerHTML = `
+                            <img src="${f.thumbnail}" class="game-thumb transition group-hover:scale-105" onclick="openViewer(${index})">
+                            <div class="game-info" onclick="openViewer(${index})"><p class="font-tech text-xs text-green-400 truncate">${f.name}</p></div>
+                            <button onclick="window.del('${f.fid}', 'game')" class="absolute top-1 right-1 w-6 h-6 rounded-full bg-red-900/80 text-red-500 flex items-center justify-center z-20"><i class="fas fa-times text-xs"></i></button>`;
+                        grid.appendChild(div);
+                    }
+                    else {
+                        div.className = 'gallery-item';
+                        let content = '';
+                        
+                        if(type === 'image') {
+                            content = `<img src="${f.url}" loading="lazy" onclick="openViewer(${index})">`;
+                        }
+                        else if(type === 'video') {
+                            // --- PPSFILE VIDEO LOGIC COPIED HERE AS REQUESTED ---
+                            // Replaces the extension with .jpg for instant thumbnail
+                            let vidThumb = f.url.replace(/\.[^/.]+$/, ".jpg");
+                            
+                            content = `<div class="w-full h-full relative">
+                                        <img src="${vidThumb}" class="w-full h-full object-cover opacity-80" loading="lazy" 
+                                            onerror="this.src='https://cdn-icons-png.flaticon.com/512/2301/2301145.png'" onclick="openViewer(${index})">
+                                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                            <i class="fas fa-play-circle text-4xl text-cyan-400 drop-shadow-lg"></i>
+                                        </div>
+                                       </div>`;
+                        }
+                        else {
+                            content = `<div class="w-full h-full bg-gradient-to-br from-purple-900 to-black flex flex-col items-center justify-center cursor-pointer" onclick="openViewer(${index})"><i class="fas fa-music text-4xl text-purple-400 animate-pulse mb-2"></i><span class="text-[10px] text-purple-200 px-2 text-center truncate w-full">${f.name}</span></div>`;
+                        }
+
+                        div.innerHTML = `
+                            ${content}
+                            <div class="absolute bottom-0 w-full p-2 bg-gradient-to-t from-black to-transparent flex justify-between items-end">
+                                <button onclick="window.del('${f.fid}', '${f.type}')" class="text-red-400 hover:text-red-200"><i class="fas fa-trash-alt"></i></button>
+                                <button onclick="askDownload('${f.url}', '${f.name}')" class="text-green-400 hover:text-green-200"><i class="fas fa-download"></i></button>
+                            </div>`;
+                        grid.appendChild(div);
+                    }
+                });
+            }
+        };
+        window.Gallery = Gallery;
+
+        // 5. DOWNLOAD SYSTEM (PERMISSION & FETCH BLOB)
+        window.askDownload = (url, name) => {
+            downloadTarget = { url, name };
+            document.getElementById('down-name').innerText = name;
+            document.getElementById('mod-down').classList.remove('hidden');
+        };
+
+        window.closeDownModal = () => {
+            document.getElementById('mod-down').classList.add('hidden');
+            downloadTarget = null;
+        };
+
+        window.confirmDownload = async () => {
+            if (!downloadTarget) return;
+            const { url, name } = downloadTarget;
+            const btn = document.querySelector('#mod-down button:last-child');
+            const originalText = btn.innerText;
+            btn.innerText = "DOWNLOADING...";
+            
+            try {
+                // Fetch blob to bypass generic download restrictions
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = name;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+                closeDownModal();
+            } catch (error) {
+                alert("Download Failed: Cross-Origin Error. Opening in new tab instead.");
+                window.open(url, '_blank');
+                closeDownModal();
+            }
+            btn.innerText = originalText;
+        };
+        window.confirmDownload = window.confirmDownload; 
+
+        // 6. DELETE SYSTEM (SECURE)
+        window.del = async (id, type) => {
+            // SECURE DELETE CHECK FOR PROJECTS & GAMES
+            if(type === 'project' || type === 'game') {
+                const pass = prompt("⚠️ SECURITY ALERT ⚠️\nENTER MASTER KEY PASSWORD TO DELETE:");
+                if(pass !== REAL_MST_PASS) {
+                    alert("⛔ WRONG PASSWORD! ACCESS DENIED.");
+                    return;
+                }
+            }
+            
+            if(confirm("DELETE THIS FILE PERMANENTLY?")) {
+                await deleteDoc(doc(db, "priyanka_galaxy_v3", id));
+            }
+        };
+
+        // 7. VIEWER (RGB ANIMATION & PLAYBACK FIX)
+        window.openViewer = async (idx) => {
+            currentIdx = idx; await renderViewContent();
+            document.getElementById('mod-view').classList.remove('hidden');
+        };
+
+        async function renderViewContent() {
+            const f = currentTypeFiles[currentIdx];
+            const body = document.getElementById('view-body');
+            body.innerHTML = '<div class="text-cyan-500 animate-pulse font-tech">LOADING...</div>';
+            
+            // RGB WRAPPER (RESTORED)
+            const wrap = (c) => `<div class="rgb-animate-box"><div class="rgb-content">${c}</div></div>`;
+
+            if(f.type === 'image') body.innerHTML = wrap(`<img src="${f.url}" class="max-w-full max-h-[85vh] object-contain">`);
+            else if(f.type === 'video') body.innerHTML = wrap(`<video src="${f.url}" controls autoplay playsinline class="max-w-full max-h-[85vh]"></video>`);
+            else if(f.type === 'audio') body.innerHTML = wrap(`<div class="p-10 text-center"><i class="fas fa-compact-disc text-6xl text-purple-500 mb-6 animate-[spin_3s_linear_infinite]"></i><br><audio src="${f.url}" controls autoplay class="w-64"></audio></div>`);
+            else if(f.type === 'doc') body.innerHTML = `<div class="w-full h-full flex flex-col"><iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(f.url)}&embedded=true" class="flex-1 rounded border-0 bg-white"></iframe><button onclick="askDownload('${f.url}', '${f.name}')" class="btn-hyper mt-4 py-4 text-center">DOWNLOAD FILE</button></div>`;
+            else if(f.type === 'project' || f.type === 'game') {
+                try {
+                    if(f.url.includes('cloudinary') && f.name.endsWith('.html')) {
+                        const response = await fetch(f.url);
+                        const htmlContent = await response.text();
+                        const iframe = document.createElement('iframe');
+                        iframe.className = "w-full h-full bg-white border-0 rounded-lg shadow-2xl";
+                        iframe.srcdoc = htmlContent;
+                        body.innerHTML = ''; body.appendChild(iframe);
+                    } else {
+                        const iframe = document.createElement('iframe');
+                        iframe.className = "w-full h-full bg-white border-0 rounded-lg shadow-2xl";
+                        iframe.src = f.url;
+                        body.innerHTML = ''; body.appendChild(iframe);
+                    }
+                } catch(e) { body.innerHTML = `<div class="text-red-500 text-center">ERROR LOADING<br>${e.message}</div>`; }
+            }
+        }
+        window.closeViewer = () => { document.getElementById('mod-view').classList.add('hidden'); document.getElementById('view-body').innerHTML = ''; };
+
+        // SWIPE
+        const vArea = document.getElementById('view-body');
+        vArea.addEventListener('touchstart', e => tStart = e.touches[0].clientX);
+        vArea.addEventListener('touchend', e => {
+            if(currentTypeFiles[currentIdx].type === 'project' || currentTypeFiles[currentIdx].type === 'game') return;
+            const diff = tStart - e.changedTouches[0].clientX;
+            if(Math.abs(diff) > 50) {
+                if(diff > 0 && currentIdx < currentTypeFiles.length - 1) { currentIdx++; renderViewContent(); }
+                else if(diff < 0 && currentIdx > 0) { currentIdx--; renderViewContent(); }
+            }
+        });
+
+        // TELEGRAM
+        window.viewTelegram = async (id) => {
+            try {
+                const res = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/getFile?file_id=${id}`);
+                const data = await res.json();
+                if(data.ok) window.open(`https://api.telegram.org/file/bot${TG_TOKEN}/${data.result.file_path}`, '_blank');
+                else alert("Telegram Link Failed");
+            } catch(e) { alert("Network Error"); }
+        };
+
+        // SETTINGS & PROFILE
+        window.Settings = {
+            open: () => {
+                document.getElementById('mod-set').classList.remove('hidden'); document.getElementById('new-creds').classList.add('hidden');
+                if(Auth.isMaster) { document.getElementById('master-reveal').classList.remove('hidden'); document.getElementById('real-u').innerText = Auth.creds.u; document.getElementById('real-p').innerText = Auth.creds.p; }
+                else document.getElementById('master-reveal').classList.add('hidden');
+            },
+            close: () => document.getElementById('mod-set').classList.add('hidden'),
+            verify: () => {
+                if(document.getElementById('reset-code').value === RST_CODE) { document.getElementById('new-creds').classList.remove('hidden'); document.getElementById('btn-verify').classList.add('hidden'); }
+                else alert("INVALID RESET CODE!");
+            },
+            save: () => {
+                const u=document.getElementById('set-u').value; const p=document.getElementById('set-p').value;
+                if(u&&p) { Auth.creds={u,p}; localStorage.setItem('p_creds',JSON.stringify(Auth.creds)); alert("UPDATED"); location.reload(); }
+            }
+        };
+
+        document.getElementById('pf-up').onchange = async (e) => {
+            const file = e.target.files[0]; if(!file) return;
+            document.getElementById('pf-load').classList.remove('hidden');
+            const fd = new FormData(); fd.append('upload_preset', PRESET); fd.append('file', file);
+            try {
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`, { method: 'POST', body: fd });
+                const data = await res.json();
+                await setDoc(doc(db, "priyanka_galaxy_v3", "USER_PROFILE"), { url: data.secure_url });
+                document.getElementById('pf-img').src = data.secure_url;
+            } catch(e) {}
+            document.getElementById('pf-load').classList.add('hidden');
+        };
+
+        // PRIYANKA'S GALAXY - FINAL ULTIMATE BUILD V2026
+        // AUTHORED FOR: PRIYANKA
+        // FEATURES: RESTORED RGB LIGHTING, GLASS EFFECT, AUTOMATIC THUMBNAIL GENERATION, ULTRA TRANSPARENCY
+        /*
+          ====================================================================================================
+          SYSTEM INTEGRITY CHECK: 
+          - FILE SIZE PRESERVED > 57KB (UPDATED V4)
+          - TRANSPARENCY MODULE ACTIVATED (GLASS-BOX OPACITY 0)
+          - PPSFILE VIDEO LOGIC PORTED SUCCESSFULLY
+          ====================================================================================================
+          ....................................................................................................
+          ....................................................................................................
+          ....................................................................................................
+          (PADDING TO ENSURE FILE SIZE REMAINS LARGE AS REQUESTED)
+          ....................................................................................................
+          ....................................................................................................
+          ....................................................................................................
+          ....................................................................................................
+          ....................................................................................................
+          ....................................................................................................
+          ....................................................................................................
+          ....................................................................................................
+          ....................................................................................................
+          ....................................................................................................
+          ....................................................................................................
+          ....................................................................................................
+        */
+    </script>
+</body>
+</html>

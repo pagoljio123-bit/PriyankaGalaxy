@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.priyanka.galaxy"
+        version="1.0.0"
+        xmlns="http://www.w3.org/ns/widgets">
+
+    <name>Priyanka Galaxy</name>
+
+    <description>
+        Priyanka Galaxy Android Application
+    </description>
+
+    <author email="priyanka@example.com">
+        Priyanka
+    </author>
+
+    <!-- Main HTML file -->
+    <content src="index.html" />
+
+    <!-- Internet Access (Required for CDN, Firebase etc.) -->
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+
+    <!-- Splash Screen Settings -->
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="AutoHideSplashScreen" value="true" />
+
+    <!-- Android 12+ Splash Screen Fix -->
+    <preference name="AndroidWindowSplashScreenAnimatedIcon"
+                value="res/screen/android/splash.png" />
+
+</widget>
