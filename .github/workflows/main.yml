@@ -27,8 +27,8 @@ jobs:
 
       - name: Build Android APK
         run: cordova build android
-        
-      - name: Upload APK
+
+        - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
           name: android-apk
