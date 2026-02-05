@@ -26,6 +26,9 @@
         Priyanka
     </author>
 
+<!-- APP ICON -->
+<icon src="res/screen/android/icon.png" />
+        
     <!-- Main HTML file -->
     <content src="index.html" />
 
