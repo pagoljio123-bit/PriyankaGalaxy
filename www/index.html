@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html><!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
@@ -797,7 +797,7 @@
         };
         window.Gallery = Gallery;
 
-        // 5. DOWNLOAD SYSTEM (PERMISSION & FETCH BLOB)
+        // 5. DOWNLOAD SYSTEM (APK COMPATIBLE REWRITE)
         window.askDownload = (url, name) => {
             downloadTarget = { url, name };
             document.getElementById('down-name').innerText = name;
@@ -809,35 +809,40 @@
             downloadTarget = null;
         };
 
+        // --- UPDATED: ANDROID COMPATIBLE DOWNLOAD FUNCTION ---
         window.confirmDownload = async () => {
             if (!downloadTarget) return;
             const { url, name } = downloadTarget;
             const btn = document.querySelector('#mod-down button:last-child');
             const originalText = btn.innerText;
-            btn.innerText = "DOWNLOADING...";
+            btn.innerText = "SAVING...";
             
+            // Strategy: Force System Download via Anchor Click (Works best for WebViews/APK)
             try {
-                // Fetch blob to bypass generic download restrictions
-                const response = await fetch(url);
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
+                // Method 1: Create a temporary anchor and force click
+                // IMPORTANT: target="_blank" forces Android WebView to hand off to System Browser/Downloader
                 const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
+                a.href = url;
                 a.download = name;
+                a.target = "_blank"; // This is crucial for Android Apps to trigger download
+                a.rel = "noopener noreferrer";
                 document.body.appendChild(a);
                 a.click();
-                window.URL.revokeObjectURL(blobUrl);
                 document.body.removeChild(a);
-                closeDownModal();
+
+                // Give visual feedback then close
+                setTimeout(() => {
+                    closeDownModal();
+                    btn.innerText = originalText;
+                }, 1000);
+
             } catch (error) {
-                alert("Download Failed: Cross-Origin Error. Opening in new tab instead.");
-                window.open(url, '_blank');
+                // Method 2: Fallback to window.open if anchor fails
+                window.open(url, '_system');
                 closeDownModal();
             }
-            btn.innerText = originalText;
         };
-        window.confirmDownload = window.confirmDownload; 
+        // End of Updated Download Logic
 
         // 6. DELETE SYSTEM (SECURE)
         window.del = async (id, type) => {
@@ -955,6 +960,7 @@
           - FILE SIZE PRESERVED > 57KB (UPDATED V4)
           - TRANSPARENCY MODULE ACTIVATED (GLASS-BOX OPACITY 0)
           - PPSFILE VIDEO LOGIC PORTED SUCCESSFULLY
+          - APK DOWNLOAD FIX PATCHED (TARGET=_BLANK ADDED)
           ====================================================================================================
           ....................................................................................................
           ....................................................................................................
