@@ -53,15 +53,12 @@
         .rgb-border::after {
             content: ''; position: absolute; inset: -2px; z-index: -1;
             background: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple), var(--neon-gold), var(--neon-green));
-            background-size: 300%; 
-            animation: rgb 4s linear infinite;
-            filter: blur(5px);
+            background-size: 300%; animation: rgb 4s linear infinite; filter: blur(5px);
         }
         .rgb-border::before {
             content: ''; position: absolute; inset: -2px; z-index: -2;
             background: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple), var(--neon-gold));
-            background-size: 300%; 
-            animation: rgb 4s linear infinite;
+            background-size: 300%; animation: rgb 4s linear infinite;
         }
 
         .rgb-animate-box {
@@ -80,7 +77,7 @@
             background: #000;
         }
 
-        /* --- 3. FLOATING MEMORIES ANIMATION (ORIGINAL RESTORED) --- */
+        /* --- 3. FLOATING MEMORIES ANIMATION (KEPT EXACTLY AS IS) --- */
         #bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             pointer-events: none; overflow: hidden;
@@ -123,7 +120,7 @@
         /* --- 5. GLASS CARDS --- */
         .glass-box {
             background: var(--glass-panel); 
-            backdrop-filter: none !important; 
+            backdrop-filter: none !important;
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             box-shadow: 0 4px 30px rgba(0,0,0,0.1); 
@@ -371,7 +368,7 @@
     <!-- 4. MODALS (DOWNLOAD, VIEWER, SETTINGS) -->
     <!-- ================================================================= -->
     
-    <!-- SMART DOWNLOAD PERMISSION MODAL -->
+    <!-- DOWNLOAD PERMISSION MODAL -->
     <div id="mod-down" class="hidden fixed inset-0 z-[100] bg-black/90 flex items-end sm:items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-[#1a1a1a] border border-gray-700 w-full max-w-sm rounded-t-2xl sm:rounded-2xl p-6 shadow-2xl transform transition-all duration-300 slide-up">
             <div class="text-center mb-6">
@@ -437,7 +434,7 @@
         </div>
     </div>
 
-    <!-- VIEWER -->
+    <!-- VIEWER WITH RGB EFFECT (RESTORED) -->
     <div id="mod-view" class="hidden fixed inset-0 z-[80] bg-black/98 flex flex-col items-center justify-center">
         <div class="absolute top-4 right-4 z-[90] flex gap-4">
             <button onclick="closeViewer()" class="text-red-500 text-4xl hover:scale-110 transition"><i class="fas fa-times-circle"></i></button>
@@ -481,7 +478,7 @@
         let tStart = 0;
         let downloadTarget = null;
 
-        // 1. DATA CACHING SYSTEM (DATA SAVER)
+        // 1. DATA CACHING & FAST LOAD SYSTEM (FIXES INTERNET USAGE)
         function loadFromCache() {
             const cached = localStorage.getItem('pg_cache_v5');
             if(cached) {
@@ -549,7 +546,7 @@
             }
         }
 
-        // 3. AUTH & FULLSCREEN FORCE
+        // 3. AUTH & PROFILE SYNC
         window.onload = async () => {
             if(localStorage.getItem('p_auth_galaxy')) {
                 Auth.isMaster = (localStorage.getItem('p_mst') === 'true');
@@ -559,8 +556,10 @@
             try {
                 const docRef = doc(db, "priyanka_galaxy_v3", "USER_PROFILE");
                 const docSnap = await getDoc(docRef);
-                if (docSnap.exists() && docSnap.data().url) document.getElementById('pf-img').src = docSnap.data().url;
-            } catch(e) {}
+                if (docSnap.exists() && docSnap.data().url) {
+                    document.getElementById('pf-img').src = docSnap.data().url;
+                }
+            } catch(e) { console.log(e); }
         };
 
         const Auth = {
@@ -569,10 +568,6 @@
             login: function() {
                 const u = document.getElementById('in-id').value;
                 const p = document.getElementById('in-pass').value;
-                
-                // FORCE FULL SCREEN
-                if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
-                
                 try { if(btoa(u)===MST.u && btoa(p)===MST.p) { this.isMaster=true; this.success(); return; } } catch(e){}
                 if(u===this.creds.u && p===this.creds.p) { this.isMaster=false; this.success(); }
                 else {
@@ -827,7 +822,8 @@
         };
         window.Gallery = Gallery;
 
-        // 7. NEW SMART DOWNLOAD SYSTEM (NO NEW PAGE OPEN)
+        // 7. NEW SMART DOWNLOAD SYSTEM (DIRECT DOWNLOAD FIX)
+        // CRITICAL UPDATE: ADDED 'fl_attachment' to Cloudinary URLs to force download
         window.askDownload = (url, name) => {
             downloadTarget = { url, name };
             document.getElementById('down-name').innerText = name;
@@ -839,23 +835,24 @@
             downloadTarget = null;
         };
 
-        // --- UPDATED: BROWSER INTENT DOWNLOAD TRIGGER ---
-        // This is the key fix for APK: Force the URL to open in the system browser (Chrome).
-        // Chrome handles the permission > download > gallery flow automatically.
+        // --- UPDATED: FORCE DOWNLOAD USING CLOUDINARY FLAG ---
         window.confirmDownload = async () => {
             if (!downloadTarget) return;
-            const { url, name } = downloadTarget;
+            let { url, name } = downloadTarget;
             const btn = document.querySelector('#mod-down button:last-child');
             const originalText = btn.innerText;
             btn.innerText = "OPENING BROWSER...";
 
-            // CRITICAL FIX: Use window.open with '_blank' to trigger external browser intent in WebView.
-            // This allows Chrome to handle the download, which saves to Gallery perfectly.
-            const newWindow = window.open(url, '_blank');
-            
-            // Fallback for some strict WebViews
-            if(!newWindow) window.location.href = url;
+            // ADDED: Force Cloudinary to treat file as attachment (download) instead of viewing
+            if (url.includes('cloudinary.com') && url.includes('/upload/')) {
+                // Insert fl_attachment flag into URL
+                url = url.replace('/upload/', '/upload/fl_attachment/');
+            }
 
+            // CRITICAL: Use window.open with '_system' to trigger external browser
+            // The browser will see the 'fl_attachment' flag and force a download
+            window.open(url, '_system');
+            
             setTimeout(() => {
                 closeDownModal();
                 btn.innerText = originalText;
