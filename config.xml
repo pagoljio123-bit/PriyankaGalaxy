@@ -3,6 +3,19 @@
         version="1.0.0"
         xmlns="http://www.w3.org/ns/widgets">
 
+<!-- FULLSCREEN MODE -->
+<preference name="Fullscreen" value="true" />
+
+<!-- HIDE STATUS BAR -->
+<preference name="StatusBarOverlaysWebView" value="true" />
+<preference name="StatusBarBackgroundColor" value="#00000000" />
+
+<platform name="android">
+    <preference name="Fullscreen" value="true" />
+</platform>
+
+<plugin name="cordova-plugin-statusbar" />
+        
     <name>Priyanka Galaxy</name>
 
     <description>
