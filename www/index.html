@@ -3,13 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <!-- FULLSCREEN METADATA FOR APK -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#020205">
-
     <title>PRIYANKA'S ETERNAL GALAXY MAX</title>
     
     <!-- LIBRARIES (TAILWIND + FONTS + ICONS) -->
@@ -35,12 +28,11 @@
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         
-        /* FORCE FULL SCREEN */
-        html, body {
-            height: 100%; width: 100%; margin: 0; padding: 0;
+        body {
             background-color: var(--bg-void);
             color: white;
             font-family: 'Rajdhani', sans-serif;
+            height: 100vh; width: 100vw;
             overflow: hidden; 
             user-select: none;
             overscroll-behavior-y: none;
@@ -57,7 +49,6 @@
             100% { transform: rotate(360deg); } 
         }
 
-        /* The Glowing RGB Border */
         .rgb-border { position: relative; overflow: hidden; z-index: 1; }
         .rgb-border::after {
             content: ''; position: absolute; inset: -2px; z-index: -1;
@@ -73,7 +64,6 @@
             animation: rgb 4s linear infinite;
         }
 
-        /* RGB Viewer Box */
         .rgb-animate-box {
             position: relative; padding: 3px; border-radius: 12px;
             background: #000; overflow: hidden; display: inline-block;
@@ -90,7 +80,7 @@
             background: #000;
         }
 
-        /* --- 3. FLOATING MEMORIES ANIMATION (EXACT RESTORATION) --- */
+        /* --- 3. FLOATING MEMORIES ANIMATION (ORIGINAL RESTORED) --- */
         #bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             pointer-events: none; overflow: hidden;
@@ -133,7 +123,7 @@
         /* --- 5. GLASS CARDS --- */
         .glass-box {
             background: var(--glass-panel); 
-            backdrop-filter: none !important;
+            backdrop-filter: none !important; 
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             box-shadow: 0 4px 30px rgba(0,0,0,0.1); 
@@ -222,7 +212,7 @@
 </head>
 <body>
 
-    <!-- DYNAMIC BACKGROUND LAYER (FLOATING PHOTOS RESTORED) -->
+    <!-- DYNAMIC BACKGROUND LAYER -->
     <div id="bg-layer"></div>
     
     <!-- ================================================================= -->
@@ -272,7 +262,7 @@
                     <h2 class="font-love text-3xl text-white drop-shadow-md">Priyanka</h2>
                     <div class="flex items-center gap-2">
                         <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                        <p class="text-[9px] font-tech text-cyan-400 tracking-[0.2em]">CACHE: ACTIVE</p>
+                        <p class="text-[9px] font-tech text-cyan-400 tracking-[0.2em]">CLOUD SYNC: ACTIVE</p>
                     </div>
                 </div>
             </div>
@@ -388,7 +378,7 @@
                 <i class="fas fa-cloud-download-alt text-5xl text-cyan-400 mb-4 animate-bounce"></i>
                 <h3 class="text-xl font-bold text-white mb-2 font-tech">DOWNLOAD FILE?</h3>
                 <p id="down-name" class="text-xs text-gray-400 font-mono break-all border p-2 rounded border-gray-700">filename.jpg</p>
-                <p class="text-[9px] text-green-400 mt-2 font-mono">100% GALLERY SAVE GUARANTEE</p>
+                <p class="text-[10px] text-green-400 mt-2 font-mono">Will open in Browser for Gallery Save</p>
             </div>
             <div class="grid grid-cols-2 gap-4">
                 <button onclick="closeDownModal()" class="py-3 rounded-xl bg-gray-800 text-gray-300 font-bold hover:bg-gray-700">CANCEL</button>
@@ -447,7 +437,7 @@
         </div>
     </div>
 
-    <!-- VIEWER WITH RGB EFFECT -->
+    <!-- VIEWER -->
     <div id="mod-view" class="hidden fixed inset-0 z-[80] bg-black/98 flex flex-col items-center justify-center">
         <div class="absolute top-4 right-4 z-[90] flex gap-4">
             <button onclick="closeViewer()" class="text-red-500 text-4xl hover:scale-110 transition"><i class="fas fa-times-circle"></i></button>
@@ -491,7 +481,7 @@
         let tStart = 0;
         let downloadTarget = null;
 
-        // 1. DATA CACHING & FAST LOAD SYSTEM (FIXES INTERNET USAGE)
+        // 1. DATA CACHING SYSTEM (DATA SAVER)
         function loadFromCache() {
             const cached = localStorage.getItem('pg_cache_v5');
             if(cached) {
@@ -837,7 +827,7 @@
         };
         window.Gallery = Gallery;
 
-        // 7. SMART DOWNLOAD SYSTEM (NO NEW PAGE OPEN)
+        // 7. NEW SMART DOWNLOAD SYSTEM (NO NEW PAGE OPEN)
         window.askDownload = (url, name) => {
             downloadTarget = { url, name };
             document.getElementById('down-name').innerText = name;
@@ -849,48 +839,27 @@
             downloadTarget = null;
         };
 
-        // --- UPDATED: PURE DIRECT DOWNLOAD FUNCTION (FETCH & BLOB + SYSTEM FALLBACK) ---
-        // This solves the Android APK download issue completely
+        // --- UPDATED: BROWSER INTENT DOWNLOAD TRIGGER ---
+        // This is the key fix for APK: Force the URL to open in the system browser (Chrome).
+        // Chrome handles the permission > download > gallery flow automatically.
         window.confirmDownload = async () => {
             if (!downloadTarget) return;
             const { url, name } = downloadTarget;
             const btn = document.querySelector('#mod-down button:last-child');
             const originalText = btn.innerText;
-            btn.innerText = "STARTING...";
+            btn.innerText = "OPENING BROWSER...";
+
+            // CRITICAL FIX: Use window.open with '_blank' to trigger external browser intent in WebView.
+            // This allows Chrome to handle the download, which saves to Gallery perfectly.
+            const newWindow = window.open(url, '_blank');
             
-            try {
-                // METHOD 1: Fetch Blob (Best for saving inside app gallery)
-                const response = await fetch(url);
-                if (!response.ok) throw new Error("Network Error");
-                
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                
-                // Create invisible link
-                const a = document.createElement('a');
-                a.href = blobUrl;
-                a.download = name; 
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                a.click();
-                
-                // Cleanup
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(blobUrl);
+            // Fallback for some strict WebViews
+            if(!newWindow) window.location.href = url;
 
-                btn.innerText = "SAVED!";
-                setTimeout(() => {
-                    closeDownModal();
-                    btn.innerText = originalText;
-                }, 1500);
-
-            } catch (error) {
-                // METHOD 2: FALLBACK TO SYSTEM (Use _system for APKs)
-                // If fetch fails (Cross-Origin), force phone download manager
-                window.open(url, '_system');
+            setTimeout(() => {
                 closeDownModal();
                 btn.innerText = originalText;
-            }
+            }, 1000);
         };
 
         // 8. DELETE SYSTEM (SECURE)
