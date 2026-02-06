@@ -10,11 +10,54 @@
 <preference name="StatusBarOverlaysWebView" value="true" />
 <preference name="StatusBarBackgroundColor" value="#00000000" />
 
+<!-- ANDROID PLATFORM SETTINGS -->
 <platform name="android">
-    <preference name="Fullscreen" value="true" />
+
+    <!-- WebView Cache -->
+    <preference name="AndroidWebViewCacheEnabled" value="true" />
+    <preference name="AndroidWebViewCacheMode" value="LOAD_DEFAULT" />
+
+        <!-- Hardware Acceleration -->
+<preference name="AndroidHardwareAccelerationDisabled" value="false" />
+
+        <!-- Lock Orientation -->
+<preference name="Orientation" value="portrait" />
+
+        <!-- Disable Overscroll -->
+<preference name="DisallowOverscroll" value="true" />
+
+        <!-- GPU / Rendering optimization -->
+<preference name="AndroidEnableSlowWholeDocumentDraw" value="false" />
+<preference name="AndroidRenderOutsideSafeArea" value="true" />
+
+        <!-- Remove white flash on app start -->
+<preference name="BackgroundColor" value="#000000" />
+
+        <!-- Faster touch response -->
+<preference name="EnableViewportScale" value="true" />
+<preference name="SuppressesIncrementalRendering" value="true" />
+
+        <!-- Memory optimization -->
+<preference name="AndroidMemoryThreshold" value="low" />
+<preference name="AndroidMaxMemory" value="512m" />
+
+        <!-- Faster WebView startup -->
+<preference name="AndroidWebViewStartupTimeout" value="0" />
+<preference name="AndroidWebViewWarmUp" value="true" />
+
+        <!-- Better text rendering -->
+<preference name="AndroidForceDarkAllowed" value="false" />
+
+        <!-- Disable accidental zoom -->
+<preference name="DisableDoubleTapZoom" value="true" />
+
 </platform>
 
-<plugin name="cordova-plugin-statusbar" />
+<plugin name="cordova-plugin-statusbar" spec="^3.0.0" />
+
+        <!-- FILE SYSTEM & DOWNLOAD -->
+<plugin name="cordova-plugin-file" spec="^8.0.0" />
+<plugin name="cordova-plugin-file-transfer" spec="^2.0.0" />
         
     <name>Priyanka Galaxy</name>
 
@@ -31,6 +74,14 @@
         
     <!-- Main HTML file -->
     <content src="index.html" />
+
+        <!-- KEEP CACHE BETWEEN APP OPENS -->
+<preference name="ClearCache" value="false" />
+<preference name="ClearSessionCache" value="false" />
+
+        <!-- LOCAL FILE PRIORITY -->
+<preference name="AndroidInsecureFileModeEnabled" value="true" />
+<preference name="AndroidPersistentFileLocation" value="Compatibility" />
 
     <!-- Internet Access (Required for CDN, Firebase etc.) -->
     <access origin="*" />
