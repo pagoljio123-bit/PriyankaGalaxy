@@ -77,7 +77,7 @@
             background: #000;
         }
 
-        /* --- 3. FLOATING MEMORIES ANIMATION (KEPT EXACTLY AS IS) --- */
+        /* --- 3. FLOATING MEMORIES ANIMATION --- */
         #bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             pointer-events: none; overflow: hidden;
@@ -598,24 +598,15 @@
 
         // 4. STATS LOGIC
         function updateStats() {
-            let globalTotal = 0;
+            let total = 0;
             ['image','video','audio','doc', 'project', 'game'].forEach(t => {
                 const files = allFiles.filter(f => f.type === t);
-                let typeSize = 0; files.forEach(f => typeSize += (f.size || 0));
-                globalTotal += typeSize;
-
-                // Format Size MB/KB
-                let sizeStr = (typeSize / (1024 * 1024)).toFixed(2) + " MB";
-                if(typeSize < 1024 * 1024) sizeStr = (typeSize / 1024).toFixed(2) + " KB";
-                if(typeSize === 0) sizeStr = "0 MB";
-
+                let size = 0; files.forEach(f => size += (f.size || 0));
+                total += size;
                 const el = document.querySelector(`.cnt-${t}`);
-                if(el) {
-                    // DISPLAY: Count + Size (e.g., "12 Files • 45 MB")
-                    el.innerText = `${files.length} Files • ${sizeStr}`;
-                }
+                if(el) el.innerText = `${files.length} Files`;
             });
-            document.getElementById('total-sz').innerText = (globalTotal / (1024 * 1024)).toFixed(2) + " MB";
+            document.getElementById('total-sz').innerText = (total / (1024 * 1024)).toFixed(2) + " MB";
         }
 
         // 5. UPLOAD ENGINE
@@ -966,12 +957,6 @@
             document.getElementById('pf-load').classList.add('hidden');
         };
 
-        <script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
-}
-</script>
-        
         // PRIYANKA'S GALAXY - FINAL ULTIMATE BUILD V2026
         // AUTHORED FOR: PRIYANKA
         // FEATURES: RESTORED RGB LIGHTING, GLASS EFFECT, AUTOMATIC THUMBNAIL GENERATION, ULTRA TRANSPARENCY
@@ -1000,6 +985,17 @@ if ("serviceWorker" in navigator) {
           ....................................................................................................
           ....................................................................................................
         */
+    </script>
+    <script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js').then(function(registration) {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+                console.log('ServiceWorker registration failed: ', err);
+            }); ki
+        });
+    }
     </script>
 </body>
 </html>
