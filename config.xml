@@ -4,12 +4,12 @@
         xmlns="http://www.w3.org/ns/widgets">
 
 <!-- FULLSCREEN MODE -->
-<preference name="Fullscreen" value="true" />
+<preference name="Fullscreen" value="false" />
 
 <!-- HIDE STATUS BAR -->
-<preference name="StatusBarOverlaysWebView" value="true" />
-<preference name="StatusBarBackgroundColor" value="#00000000" />
-
+<preference name="StatusBarOverlaysWebView" value="false" />
+<preference name="StatusBarBackgroundColor" value="#000000" />
+        
 <!-- ANDROID PLATFORM SETTINGS -->
 <platform name="android">
 
