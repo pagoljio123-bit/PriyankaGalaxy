@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=auto">
     <meta name="theme-color" content="#020205">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>PRIYANKA'S ETERNAL GALAXY MAX</title>
@@ -34,7 +34,9 @@
             background-color: var(--bg-void);
             color: white;
             font-family: 'Rajdhani', sans-serif;
-            height: 100vh; width: 100vw;
+            /* Changed to 100dvh for perfect Fit Screen keeping top/bottom bars visible */
+            height: 100dvh; 
+            width: 100vw;
             overflow: hidden; 
             user-select: none;
             overscroll-behavior-y: none;
@@ -80,7 +82,7 @@
             background-size: 400%; animation: rgb 3.5s linear infinite;
         }
 
-        /* --- ADVANCED MEDIA RGB BORDER (Previous Update) --- */
+        /* --- ADVANCED MEDIA RGB BORDER --- */
         @keyframes neonSpin {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -133,24 +135,25 @@
             border-radius: 12px;
         }
 
-        /* --- FLOATING MEMORIES (OPTIMIZED) --- */
+        /* --- FLOATING MEMORIES (100% CLEAR QUALITY) --- */
         #bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             pointer-events: none; overflow: hidden;
         }
         .mem-float {
             position: absolute; width: 90px; height: 90px; border-radius: 12px;
-            object-fit: cover; opacity: 0.85; 
-            box-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
-            border: 1px solid rgba(255,255,255,0.4);
+            object-fit: cover; 
+            opacity: 1; /* Made 100% clear/solid */
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             animation: floating linear infinite;
             z-index: -1;
             will-change: transform, opacity;
         }
         @keyframes floating {
             0% { transform: translateY(110vh) rotate(0deg) scale(0.7); opacity: 0; }
-            15% { opacity: 0.85; }
-            85% { opacity: 0.85; }
+            15% { opacity: 1; } /* 100% visibility */
+            85% { opacity: 1; } /* 100% visibility */
             100% { transform: translateY(-25vh) rotate(380deg) scale(1.15); opacity: 0; }
         }
 
@@ -794,7 +797,6 @@
                 document.getElementById('scr-auth').classList.remove('shake-screen');
             },
             logout: function() { 
-                // NEW SECURE LOGOUT SYSTEM
                 localStorage.removeItem('p_auth_galaxy');
                 localStorage.removeItem('p_mst');
                 this.isMaster = false;
@@ -1214,6 +1216,7 @@
             document.getElementById('total-sz').innerText = formatSize(totalMB) + " MB";
         }
 
+        // FLOATING PHOTOS (100% CLEAR QUALITY)
         function updateFloatingBg() {
             const con = document.getElementById('bg-layer');
             const imgs = allFiles.filter(f => f.type === 'image');
@@ -1224,7 +1227,10 @@
                 const img = imgs[Math.floor(Math.random() * imgs.length)];
                 const el = document.createElement('img');
                 let src = img.url;
-                if (src.includes('cloudinary')) src = src.replace('/upload/', '/upload/q_10,f_auto,w_100/');
+                
+                // Updated line: requesting high quality (q_auto:best) and minimum 300px width for perfect clarity 
+                if (src.includes('cloudinary')) src = src.replace('/upload/', '/upload/q_auto:best,f_auto,w_300/');
+                
                 el.src = src;
                 el.className = 'mem-float';
                 el.style.left = Math.random() * 95 + '%';
