@@ -586,22 +586,39 @@
         };
 
         // NEW FULLSCREEN FUNCTIONS
+                // NEW FULLSCREEN FUNCTIONS (Updated for Android APK)
         window.setFullScreen = () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().then(() => {
-                    showToast("FULLSCREEN ENABLED", "success");
-                }).catch(err => {
-                    showToast("Not supported on this device", "error");
-                });
+            try {
+                // 1. Android Native Status Bar Hide (For Cordova APK)
+                if (typeof StatusBar !== 'undefined') {
+                    StatusBar.hide();
+                }
+                // 2. Web Fullscreen (For Chrome Browser)
+                if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                }
+                showToast("FULL SCREEN ENABLED", "success");
+            } catch(err) {
+                showToast("Error enabling Fullscreen", "error");
             }
         };
+
         window.setFitScreen = () => {
-            if (document.fullscreenElement) {
-                document.exitFullscreen().then(() => {
-                    showToast("FIT SCREEN ENABLED", "success");
-                });
+            try {
+                // 1. Android Native Status Bar Show (For Cordova APK)
+                if (typeof StatusBar !== 'undefined') {
+                    StatusBar.show();
+                }
+                // 2. Web Exit Fullscreen (For Chrome Browser)
+                if (document.fullscreenElement && document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+                showToast("FIT SCREEN ENABLED", "success");
+            } catch(err) {
+                console.log(err);
             }
         };
+
 
         // LOGOUT UI HELPERS
         window.openLogoutModal = () => document.getElementById('mod-logout').classList.remove('hidden');
