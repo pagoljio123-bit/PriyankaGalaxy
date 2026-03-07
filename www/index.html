@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=auto">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#020205">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>PRIYANKA'S ETERNAL GALAXY MAX</title>
@@ -34,7 +34,6 @@
             background-color: var(--bg-void);
             color: white;
             font-family: 'Rajdhani', sans-serif;
-            /* Changed to 100dvh for perfect Fit Screen keeping top/bottom bars visible */
             height: 100dvh; 
             width: 100vw;
             overflow: hidden; 
@@ -143,7 +142,7 @@
         .mem-float {
             position: absolute; width: 90px; height: 90px; border-radius: 12px;
             object-fit: cover; 
-            opacity: 1; /* Made 100% clear/solid */
+            opacity: 1; 
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.6);
             animation: floating linear infinite;
@@ -152,8 +151,8 @@
         }
         @keyframes floating {
             0% { transform: translateY(110vh) rotate(0deg) scale(0.7); opacity: 0; }
-            15% { opacity: 1; } /* 100% visibility */
-            85% { opacity: 1; } /* 100% visibility */
+            15% { opacity: 1; } 
+            85% { opacity: 1; } 
             100% { transform: translateY(-25vh) rotate(380deg) scale(1.15); opacity: 0; }
         }
 
@@ -164,7 +163,7 @@
         .scroll-view {
             overflow-y: auto; overflow-x: hidden; height: 100%; width: 100%;
             -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
-            padding-bottom: 160px; /* Extra bottom padding */
+            padding-bottom: 160px; 
             touch-action: pan-y;
         }
         .gallery-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; padding: 10px; }
@@ -487,7 +486,11 @@
             <div id="master-reveal" class="hidden mt-6 bg-red-900/20 border border-red-800 p-3 rounded text-center">
                 <p class="text-[9px] text-red-500 font-tech mb-2">MASTER ACCESS GRANTED</p>
                 
-                <div class="mb-4 text-left">
+                <button onclick="Settings.close(); UI.nav('scr-dash');" class="w-full py-3 mb-5 rounded border border-cyan-500 bg-cyan-900/40 text-cyan-400 font-bold font-tech hover:bg-cyan-500 hover:text-black transition tracking-widest shadow-[0_0_15px_cyan]">
+                    <i class="fas fa-home mr-2"></i> GO TO DASHBOARD
+                </button>
+                
+                <div class="mb-4 text-left border-t border-red-800/50 pt-4">
                     <p class="text-[10px] text-cyan-400 mb-2 flex items-center gap-2 border-b border-cyan-900 pb-1">
                         <i class="fas fa-shield-alt"></i>
                         ULTRA REALISTIC DEVICE TRACKING
@@ -504,7 +507,7 @@
                         <i class="fas fa-upload mr-2"></i> SELECT HTML FILE
                     </label>
                     <input type="file" id="html-up" class="hidden" accept=".html">
-                    <button onclick="uploadProject()" class="btn-hyper w-full py-2 text-xs border-orange-500 text-orange-400 mt-2">UPLOAD PROJECT</button>
+                    <button onclick="window.uploadProject()" class="btn-hyper w-full py-2 text-xs border-orange-500 text-orange-400 mt-2">UPLOAD PROJECT</button>
                 </div>
 
                 <div class="mt-4 pt-4 border-t border-red-800/50">
@@ -513,16 +516,16 @@
                     <input type="text" id="gm-url" placeholder="OR PASTE URL LINK" class="w-full bg-black/50 border border-green-800 text-green-400 text-xs p-3 mb-3 rounded font-mono text-center">
                     <div class="grid grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-xs text-left text-gray-400 mb-1">GAME FILE</label>
+                            <label class="block text-xs text-left text-gray-400 mb-1">GAME FILE (.html)</label>
                             <input type="file" id="gm-file" accept=".html" class="block w-full text-xs text-gray-400 border border-gray-700 rounded p-2">
                         </div>
                         <div>
-                            <label class="block text-xs text-left text-gray-400 mb-1">LOGO</label>
+                            <label class="block text-xs text-left text-gray-400 mb-1">LOGO (Image)</label>
                             <input type="file" id="gm-thumb" accept="image/*" class="block w-full text-xs text-gray-400 border border-gray-700 rounded p-2">
                         </div>
                     </div>
                     <button onclick="window.uploadGame()" class="btn-hyper w-full py-3 text-xs border-green-500 text-green-400 mt-4">UPLOAD GAME</button>
-                    <div id="gm-load" class="hidden text-[10px] text-green-500 mt-2 text-center">UPLOADING... <span id="gm-prog">0%</span></div>
+                    <div id="gm-load" class="hidden text-[10px] text-green-500 mt-2 text-center font-bold">UPLOADING...</div>
                 </div>
             </div>
         </div>
@@ -586,39 +589,23 @@
         };
 
         // NEW FULLSCREEN FUNCTIONS
-                // NEW FULLSCREEN FUNCTIONS (Updated for Android APK)
         window.setFullScreen = () => {
             try {
-                // 1. Android Native Status Bar Hide (For Cordova APK)
-                if (typeof StatusBar !== 'undefined') {
-                    StatusBar.hide();
-                }
-                // 2. Web Fullscreen (For Chrome Browser)
-                if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
+                if (typeof AndroidFullScreen !== 'undefined') {
+                    AndroidFullScreen.immersiveMode();
                 }
                 showToast("FULL SCREEN ENABLED", "success");
-            } catch(err) {
-                showToast("Error enabling Fullscreen", "error");
-            }
+            } catch(err) {}
         };
 
         window.setFitScreen = () => {
             try {
-                // 1. Android Native Status Bar Show (For Cordova APK)
-                if (typeof StatusBar !== 'undefined') {
-                    StatusBar.show();
-                }
-                // 2. Web Exit Fullscreen (For Chrome Browser)
-                if (document.fullscreenElement && document.exitFullscreen) {
-                    document.exitFullscreen();
+                if (typeof AndroidFullScreen !== 'undefined') {
+                    AndroidFullScreen.showSystemUI();
                 }
                 showToast("FIT SCREEN ENABLED", "success");
-            } catch(err) {
-                console.log(err);
-            }
+            } catch(err) {}
         };
-
 
         // LOGOUT UI HELPERS
         window.openLogoutModal = () => document.getElementById('mod-logout').classList.remove('hidden');
@@ -1126,7 +1113,108 @@
             }
         };
 
-        // FAST UPLOAD FUNCTIONS
+        // ==============================================================
+        // --- NEW: MASTER UPLOAD FUNCTIONS FOR PROJECTS & GAMES ---
+        // ==============================================================
+        
+        async function uploadRawToCloudinary(file) {
+            return new Promise(resolve => {
+                const fd = new FormData(); 
+                fd.append('upload_preset', PRESET); 
+                fd.append('file', file);
+                const xhr = new XMLHttpRequest();
+                xhr.onload = () => {
+                    if(xhr.status === 200) {
+                        const res = JSON.parse(xhr.responseText);
+                        resolve(res.secure_url);
+                    } else resolve(null);
+                };
+                xhr.onerror = () => resolve(null);
+                xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`); 
+                xhr.send(fd);
+            });
+        }
+
+        window.uploadProject = async () => {
+            const nameInp = document.getElementById('prj-name').value.trim();
+            const fileInp = document.getElementById('html-up').files[0];
+            
+            if(!nameInp) { alert("PROJECT NAME REQUIRED!"); return; }
+            if(!fileInp) { alert("PLEASE SELECT HTML FILE!"); return; }
+            
+            showToast("UPLOADING PROJECT...", "info");
+            const url = await uploadRawToCloudinary(fileInp);
+            
+            if(url) {
+                const docData = { name: nameInp, type: 'project', size: fileInp.size, url: url, source: 'cloudinary', time: Date.now() };
+                const docRef = await addDoc(colRef, docData);
+                allFiles.unshift({ ...docData, fid: docRef.id }); 
+                saveCachedFiles(allFiles);
+                updateStats();
+                showToast("PROJECT UPLOADED SUCCESSFULLY!", "success");
+                
+                document.getElementById('prj-name').value = '';
+                document.getElementById('html-up').value = '';
+            } else {
+                showToast("PROJECT UPLOAD FAILED", "error");
+            }
+        };
+
+        window.uploadGame = async () => {
+            const nameInp = document.getElementById('gm-name').value.trim();
+            const urlInp = document.getElementById('gm-url').value.trim();
+            const fileInp = document.getElementById('gm-file').files[0];
+            const thumbInp = document.getElementById('gm-thumb').files[0];
+            const loadText = document.getElementById('gm-load');
+            
+            if(!nameInp) { alert("GAME NAME REQUIRED!"); return; }
+            if(!urlInp && !fileInp) { alert("PROVIDE GAME URL OR HTML FILE!"); return; }
+            if(!thumbInp) { alert("GAME LOGO REQUIRED!"); return; }
+
+            loadText.classList.remove('hidden');
+            loadText.innerHTML = "UPLOADING LOGO...";
+            
+            const thumbUrl = await uploadRawToCloudinary(thumbInp);
+            if(!thumbUrl) { 
+                showToast("LOGO UPLOAD FAILED", "error"); 
+                loadText.classList.add('hidden');
+                return; 
+            }
+            
+            let finalUrl = urlInp;
+            let size = 0;
+            
+            if(fileInp) {
+                loadText.innerHTML = "UPLOADING GAME FILE...";
+                finalUrl = await uploadRawToCloudinary(fileInp);
+                size = fileInp.size;
+                if(!finalUrl) { 
+                    showToast("GAME FILE UPLOAD FAILED", "error"); 
+                    loadText.classList.add('hidden');
+                    return; 
+                }
+            }
+
+            loadText.innerHTML = "SAVING TO DATABASE...";
+            const docData = { name: nameInp, type: 'game', size: size, url: finalUrl, thumbnail: thumbUrl, source: 'cloudinary', time: Date.now() };
+            const docRef = await addDoc(colRef, docData);
+            
+            allFiles.unshift({ ...docData, fid: docRef.id }); 
+            saveCachedFiles(allFiles);
+            updateStats();
+            showToast("GAME UPLOADED SUCCESSFULLY!", "success");
+            
+            document.getElementById('gm-name').value = '';
+            document.getElementById('gm-url').value = '';
+            document.getElementById('gm-file').value = '';
+            document.getElementById('gm-thumb').value = '';
+            loadText.classList.add('hidden');
+        };
+
+        // ==============================================================
+
+
+        // FAST UPLOAD FUNCTIONS (Gallery)
         document.getElementById('spec-up').onchange = async (e) => {
             const files = Array.from(e.target.files);
             const type = document.getElementById('gal-title').getAttribute('dt');
@@ -1233,7 +1321,7 @@
             document.getElementById('total-sz').innerText = formatSize(totalMB) + " MB";
         }
 
-        // FLOATING PHOTOS (100% CLEAR QUALITY)
+        // FLOATING PHOTOS
         function updateFloatingBg() {
             const con = document.getElementById('bg-layer');
             const imgs = allFiles.filter(f => f.type === 'image');
@@ -1244,10 +1332,7 @@
                 const img = imgs[Math.floor(Math.random() * imgs.length)];
                 const el = document.createElement('img');
                 let src = img.url;
-                
-                // Updated line: requesting high quality (q_auto:best) and minimum 300px width for perfect clarity 
                 if (src.includes('cloudinary')) src = src.replace('/upload/', '/upload/q_auto:best,f_auto,w_300/');
-                
                 el.src = src;
                 el.className = 'mem-float';
                 el.style.left = Math.random() * 95 + '%';
@@ -1259,7 +1344,7 @@
             }
         }
 
-        // AGGRESSIVE OFFLINE SERVICE WORKER (CACHE FIRST)
+        // AGGRESSIVE OFFLINE SERVICE WORKER
         if ('serviceWorker' in navigator) {
             const swCode = `
                 const CACHE_NAME = 'pg-galaxy-v5';
